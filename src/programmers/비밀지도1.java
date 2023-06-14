@@ -1,3 +1,7 @@
+package programmers;
+
+import java.util.Arrays;
+
 public class 비밀지도1 {
     private static String[] toBinaryCode(int n, int[] arr) {
         String[] str = new String[n];
