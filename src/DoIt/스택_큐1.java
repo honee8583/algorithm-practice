@@ -18,7 +18,7 @@ package DoIt;
 import java.util.Scanner;
 import java.util.Stack;
 
-public class 스택1 {
+public class 스택_큐1 {
 
     public static void solution() {
         Scanner sc = new Scanner(System.in);
