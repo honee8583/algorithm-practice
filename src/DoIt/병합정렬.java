@@ -38,7 +38,7 @@ public class 병합정렬 {
     }
 
     public static void main(String[] args) {
-        int[] arr = new int[]{42,32,24,60,15,5,90,45};
+        int[] arr = new int[]{42, 32, 24, 60, 15, 5, 90, 45};
         int[] result = new int[arr.length];
         mergeSort(arr, result, 0, arr.length - 1);
         for (int i = 0; i < arr.length; i++) {
