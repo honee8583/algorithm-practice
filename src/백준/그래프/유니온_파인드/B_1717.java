@@ -1,4 +1,4 @@
-package 백준;
+package 백준.그래프.유니온_파인드;
 
 import java.util.Arrays;
 import java.util.Scanner;
