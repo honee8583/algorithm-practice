@@ -42,8 +42,6 @@ public class B_1766 {
             }
         }
 
-        List<Integer> result = new ArrayList<>();
-
         while (!pq.isEmpty()) {
             int cur = pq.poll();
             System.out.print(cur + " ");
