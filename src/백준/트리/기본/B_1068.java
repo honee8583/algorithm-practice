@@ -1,4 +1,4 @@
-package 백준.트리;
+package 백준.트리.기본;
 
 import java.util.ArrayList;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package 백준.트리;
+package 백준.트리.기본;
 
 import java.io.BufferedReader;
 import java.io.IOException;
