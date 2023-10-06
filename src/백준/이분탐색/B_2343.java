@@ -1,4 +1,4 @@
-package 백준;
+package 백준.이분탐색;
 
 import java.io.IOException;
 import java.util.Scanner;

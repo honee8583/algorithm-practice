@@ -1,4 +1,4 @@
-package 백준;
+package 백준.그래프.DFS_BFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;

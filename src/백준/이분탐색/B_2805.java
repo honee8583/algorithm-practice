@@ -1,4 +1,4 @@
-package 백준;
+package 백준.이분탐색;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,33 +6,33 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class B_2512 {
+public class B_2805 {
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
-        int N = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());   // 나무의 개수
+        int M = Integer.parseInt(st.nextToken());   // 필요한 나무의 길이
 
-        // 각 지방의 요청 예산(1 ~ 100000)
+        int[] A = new int[N];   // 나무 길이 배열
         st = new StringTokenizer(bf.readLine());
-        int[] A = new int[N];
         for (int i = 0; i < N; i++) {
             A[i] = Integer.parseInt(st.nextToken());
         }
 
-        st = new StringTokenizer(bf.readLine());
-        int M = Integer.parseInt(st.nextToken());   // 전체 국가 예산
-
-        int start = 1;
+        int start = 0;
         int end = Arrays.stream(A).max().getAsInt();
         while (start <= end) {
-            int mid = start + (end - start) / 2;
+            int mid = (start + end) / 2;    // 톱날의 길이
 
-            int sum = 0;
-            for (int i = 0; i < N; i++) {
-                sum += Math.min(A[i], mid);
+            long sum = 0;   // long 타입으로 선언해줘야 한다.
+            for(int tree: A) {
+                if (tree > mid) {
+                    sum += tree - mid;
+                }
             }
 
-            if (sum > M) {
+            // 만든 나무의 총 길이가 목표 나무의 길이보다 길 경우
+            if (sum < M) {
                 end = mid - 1;
             } else {
                 start = mid + 1;
