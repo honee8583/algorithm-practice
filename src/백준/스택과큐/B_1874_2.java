@@ -8,41 +8,32 @@ public class B_1874_2 {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
 
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = sc.nextInt();
-        }
-
         StringBuilder sb = new StringBuilder();
-        Stack<Integer> stack = new Stack<>();
-        int num = 1;
-        boolean flag = true;
-        for (int i = 0; i < N; i++) {
-            int target = arr[i];
 
-            if (target >= num) {
-                // 최대한 push
-                while (target >= num) {
-                    stack.push(num++);
-                    sb.append("+\n");
-                }
-                // 목표값에 도달하면 추출
+        int num = 1;
+        boolean available = true;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < N; i++) {
+            int n = sc.nextInt();
+
+            while (num <= n) {
+                stack.push(num++);
+                sb.append("+\n");
+            }
+
+            if (stack.peek() > n) {
+                available = false;
+                System.out.println("NO");
+                break;
+            }
+
+            if (!stack.isEmpty()) {
                 stack.pop();
                 sb.append("-\n");
-            } else {
-                 int n = stack.pop();
-
-                 if (n > target) {
-                     System.out.println("NO");
-                     flag = false;
-                     break;
-                 } else {
-                     sb.append("-\n");
-                 }
             }
         }
 
-        if (flag) {
+        if (available) {
             System.out.println(sb);
         }
     }
