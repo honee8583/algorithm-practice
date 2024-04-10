@@ -9,25 +9,19 @@ public class B_11047 {
         int N = sc.nextInt();
         int K = sc.nextInt();
 
-        int[] A = new int[N];
+        int[] coins = new int[N];
         for (int i = 0; i < N; i++) {
-            A[i] = sc.nextInt();
+            coins[i] = sc.nextInt();
         }
 
-        int result = 0;
-        while (K != 0) {
-            int i = 0;
-            for (i = 0; i < N; i++) {
-                if (A[i] > K) {
-                    break;
-                }
+        int cnt = 0;
+        for (int i = N - 1; i >= 0; i--) {
+            if (coins[i] <= K) {
+                cnt += K / coins[i];
+                K %= coins[i];
             }
-            i--;
-
-            result += K / A[i];
-            K %= A[i];
         }
 
-        System.out.println(result);
+        System.out.println(cnt);
     }
 }
