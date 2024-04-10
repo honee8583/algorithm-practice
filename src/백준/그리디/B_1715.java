@@ -8,18 +8,19 @@ public class B_1715 {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
 
-        PriorityQueue<Long> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int i = 0; i < N; i++) {
-            pq.offer(sc.nextLong());
+            int num = sc.nextInt();
+            pq.offer(num);
         }
 
         int sum = 0;
         while (pq.size() > 1) {
-            long first = pq.poll();
-            long second = pq.poll();
+            int a = pq.poll();
+            int b = pq.poll();
 
-            sum += (first + second);
-            pq.offer(first + second);
+            sum += (a + b);
+            pq.offer(a + b);
         }
 
         System.out.println(sum);
