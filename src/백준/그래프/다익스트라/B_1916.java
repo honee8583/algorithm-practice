@@ -8,17 +8,12 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class B_1916 {
-    public static int N, M;
-    public static ArrayList<Node>[] list;
-    public static boolean[] visited;
-    public static int[] costs;
-
     public static class Node implements Comparable<Node> {
-        int num;
+        int city;
         int cost;
 
-        public Node (int num, int cost) {
-            this.num = num;
+        public Node(int city, int cost) {
+            this.city = city;
             this.cost = cost;
         }
 
@@ -34,56 +29,56 @@ public class B_1916 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(bf.readLine());   // 도시의 개수
-        int M = Integer.parseInt(bf.readLine());   // 버스의 개수
+        int N = Integer.parseInt(bf.readLine());
+        int M = Integer.parseInt(bf.readLine());
 
-        // 연결리스트 구성
-        list = new ArrayList[N + 1];
-        for (int i = 0; i <= N; i++) {
-            list[i] = new ArrayList<>();
+        // 인접리스트 구성
+        ArrayList<Node>[] adj = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            adj[i] = new ArrayList();
         }
 
         for (int i = 0; i < M; i++) {
             StringTokenizer st = new StringTokenizer(bf.readLine());
-            int busA = Integer.parseInt(st.nextToken());
-            int busB = Integer.parseInt(st.nextToken());
-            int cost = Integer.parseInt(st.nextToken());
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
 
-            list[busA].add(new Node(busB, cost));
+            adj[s].add(new Node(e, c));
         }
 
         StringTokenizer st = new StringTokenizer(bf.readLine());
         int start = Integer.parseInt(st.nextToken());
         int end = Integer.parseInt(st.nextToken());
 
-        visited = new boolean[N + 1];
-        costs = new int[N + 1];
+        boolean[] visited = new boolean[N + 1];
+        int[] result = new int[N + 1];
         for (int i = 0; i <= N; i++) {
-            costs[i] = Integer.MAX_VALUE;
+            result[i] = Integer.MAX_VALUE;
         }
+        result[start] = 0;
 
+        // 다익스트라 수행
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.offer(new Node(start, 0));
-        costs[start] = 0;
+        pq.add(new Node(start, 0));
 
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
-            int n = cur.num;
+            int curCity = cur.city;
+            if (visited[curCity]) continue;
+            visited[curCity] = true;
 
-            if (visited[n]) continue;
-            visited[n] = true;
+            for (Node next : adj[curCity]) {
+                int nextCity = next.city;
+                int cost = next.cost;
 
-            for (Node node : list[n]) {
-                int next = node.num;
-                int cost = node.cost;
-
-                if (costs[next] > costs[n] + cost) {
-                    costs[next] = costs[n] + cost;
-                    pq.offer(new Node(next, costs[next]));
+                if (result[nextCity] > result[curCity] + cost) {
+                    result[nextCity] = result[curCity] + cost;
+                    pq.add(new Node(nextCity, result[nextCity]));
                 }
             }
         }
 
-        System.out.println(costs[end]);
+        System.out.println(result[end]);
     }
 }
