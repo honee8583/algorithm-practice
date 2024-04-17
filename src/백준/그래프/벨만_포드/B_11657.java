@@ -3,74 +3,84 @@ package 백준.그래프.벨만_포드;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class B_11657 {
     public static class Edge {
-        int node;
-        int next;
+        int start;
+        int end;
         int weight;
 
-        public Edge(int node, int next, int weight) {
-            this.node = node;
-            this.next = next;
+        public Edge(int start, int end, int weight) {
+            this.start = start;
+            this.end = end;
             this.weight = weight;
         }
     }
 
-    public static int N, E;
-    public static long[] distance;
-    public static Edge[] edgeList;
-
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
-        N = Integer.parseInt(st.nextToken());
-        E = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        edgeList = new Edge[E];
-        for (int i = 0; i < E; i++) {
+        Edge[] edges = new Edge[M];
+
+        for (int i = 0; i < M; i++) {
             st = new StringTokenizer(bf.readLine());
-            int node = Integer.parseInt(st.nextToken());
-            int next = Integer.parseInt(st.nextToken());
-            int weight = Integer.parseInt(st.nextToken());
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+            int C = Integer.parseInt(st.nextToken());
 
-            edgeList[i] = new Edge(node, next, weight);
+            edges[i] = new Edge(A, B, C);
         }
 
-        distance = new long[N + 1];
+        // 최단거리 배열
+        long[] time = new long[N + 1];
         for (int i = 0; i <= N; i++) {
-            distance[i] = Integer.MAX_VALUE;
+            time[i] = Integer.MAX_VALUE;
         }
+        time[1] = 0;
 
-        distance[1] = 0;
-        boolean flag = true;
-        for (int j = 1; j < N; j++) {   // 업데이트 반복 횟수는 N-1 번이다.
-            for (int i = 0; i < E; i++) {
-                Edge curEdge = edgeList[i];
+        // N-1만큼 업데이트 반복
+        for (int i = 1; i < N; i++) {
+            // 모든 에지를 탐색하며 업데이트
+            for (int j = 0; j < M; j++) {
+                Edge cur = edges[j];
+                int start = cur.start;
+                int end = cur.end;
+                int weight = cur.weight;
 
-                if (distance[curEdge.node] != Integer.MAX_VALUE && distance[curEdge.next] > distance[curEdge.node] + curEdge.weight) {
-                    distance[curEdge.next] = distance[curEdge.node] + curEdge.weight;
+                if (time[start] != Integer.MAX_VALUE && time[end] > time[start] + weight) {
+                    time[end] = time[start] + weight;
                 }
             }
         }
 
-        for (int i = 0; i < E; i++) {
-            Edge curEdge = edgeList[i];
+        // 음수 사이클 확인 - 에지리스트를 반복하며 확인
+        boolean flag = true;
+        for (int i = 0; i < M; i++) {
+            Edge cur = edges[i];
+            int start = cur.start;
+            int end = cur.end;
+            int weight = cur.weight;
 
-            if (distance[curEdge.node] != Integer.MAX_VALUE && distance[curEdge.next] > distance[curEdge.node] + curEdge.weight) {
+            if (time[start] != Integer.MAX_VALUE && time[end] > time[start] + weight) {
                 flag = false;
                 break;
             }
         }
 
-        if (!flag) {
-            System.out.println(-1);
-        } else {
+        if (flag) {
             for (int i = 2; i <= N; i++) {
-                if (distance[i] == Integer.MAX_VALUE) System.out.println(-1);
-                else System.out.println(distance[i]);
+                if (time[i] == Integer.MAX_VALUE) {
+                    System.out.println("-1");
+                } else {
+                    System.out.println(time[i]);
+                }
             }
+        } else {
+            System.out.println("-1");
         }
     }
 }
