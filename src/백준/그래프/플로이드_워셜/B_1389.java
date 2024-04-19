@@ -6,61 +6,61 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class B_1389 {
-    static int N, M;
-    static int[][] distance;
-
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(bf.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());   // 유저의 수
+        int M = Integer.parseInt(st.nextToken());   // 친구관계의 수
 
-        // 인접행렬 구성
-        distance = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        // 인접행렬 초기화
+        long[][] adj = new long[N + 1][N + 1];
+        for (int i = 0; i <= N; i++) {
+            for (int j = 0; j <= N; j++) {
                 if (i == j) {
-                    distance[i][j] = 0;
+                    adj[i][j] = 0;
                 } else {
-                    distance[i][j] = 10000;
+                    adj[i][j] = 10000001;
                 }
             }
         }
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(bf.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
 
-            distance[a - 1][b - 1] = 1;
-            distance[b - 1][a - 1] = 1;
+            // 양방향그래프이므로 양쪽으로 연결
+            adj[A][B] = 1;
+            adj[B][A] = 1;
         }
 
-        for (int k = 0; k < N; k++) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (distance[i][j] > distance[i][k] + distance[k][j]) {
-                        distance[i][j] = distance[i][k] + distance[k][j];
+        for (int K = 1; K <= N; K++) {
+            for (int S = 1; S <= N; S++) {
+                for (int E = 1; E <= N; E++) {
+                    if (adj[S][K] != 10000001 && adj[K][E] != 10000001) {
+                        adj[S][E] = Math.min(adj[S][E], adj[S][K] + adj[K][E]);
                     }
                 }
             }
         }
 
-        int min = Integer.MAX_VALUE;
-        int idx = 0;
-        for (int i = 0; i < N; i++) {
-            int sum = 0;
-            for (int j = 0; j < N; j++) {
-                if (distance[i][j] != 0 && distance[i][j] != 10000) {
-                    sum += distance[i][j];
+        int answer = 0;
+        long min = Integer.MAX_VALUE;
+        long sum = 0;
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                if (adj[i][j] != 10000001) {
+                    sum += adj[i][j];
                 }
             }
-            if (min > sum) {
-                idx = i + 1;
+
+            if (sum < min) {
                 min = sum;
+                answer = i;
             }
+            sum = 0;
         }
 
-        System.out.println(idx);
+        System.out.println(answer);
     }
 }
