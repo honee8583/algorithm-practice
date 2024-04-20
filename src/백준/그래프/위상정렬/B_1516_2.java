@@ -1,75 +1,61 @@
 package 백준.그래프.위상정렬;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class B_1516_2 {
-    static int N;
-    static int[] answer, inDegree, timeArr;
-    static ArrayList<Integer>[] adj;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(br.readLine());
 
-        adj = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
-            adj[i] = new ArrayList<>();
-        }   // 인접리스트 구성
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i <= N; i++) {
+            adj.add(new ArrayList<>());
+        }
 
-        inDegree = new int[N + 1];
-        timeArr = new int[N + 1];
+        int[] D = new int[N + 1];   // 진입차수 배열
+        int[] time = new int[N + 1];    // 최단거리 배열
         for (int i = 1; i <= N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int time = Integer.parseInt(st.nextToken());
-            timeArr[i] = time;
-            while (st.hasMoreTokens()) {
-                int adjBuilding = Integer.parseInt(st.nextToken());
-                if (adjBuilding == -1) {
+            time[i] = Integer.parseInt(st.nextToken());
+
+            while (true) {
+                int num = Integer.parseInt(st.nextToken());
+                if (num == -1) {
                     break;
-                }
-                adj[adjBuilding].add(i);
-                inDegree[i]++;
-            }
-        }
-
-//        System.out.println("진입차수배열 : " + Arrays.toString(inDegree));
-
-        topologicalSorting();
-
-        for (int i = 1; i <= N; i++) {
-            answer[i] += timeArr[i];
-            System.out.println(answer[i]);
-        }
-    }
-
-    public static void topologicalSorting() {
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 1; i <= N; i++) {
-            if (inDegree[i] == 0) {
-                queue.add(i);
-            }
-        }
-
-        answer = new int[N + 1];
-        while (!queue.isEmpty()) {
-            int cur = queue.poll();
-
-            for (int next : adj[cur]) {
-                answer[next] = Math.max(answer[cur] + timeArr[cur], answer[next]);
-
-                inDegree[next]--;
-
-                if (inDegree[next] == 0) {
-                    queue.add(next);
+                } else {
+                    // 인접리스트 구성 및 진입차수 배열 구성
+                    adj.get(num).add(i);
+                    D[i]++;
                 }
             }
+        }
+
+        // 진입차수가 0인 인덱스로 시작
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 1; i <= N; i++) {
+            if (D[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        int[] ans = new int[N + 1];
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int next : adj.get(cur)) {
+                ans[next] = Math.max(ans[next], ans[cur] + time[cur]);
+                D[next]--;
+
+                // 진입차수가 0일경우 다시 추가
+                if (D[next] == 0) {
+                    q.add(next);
+                }
+            }
+        }
+
+        // 출력
+        for (int i = 1; i <= N; i++) {
+            System.out.println(ans[i] + time[i]);
         }
     }
 }
