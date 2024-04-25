@@ -2,6 +2,7 @@ package programmers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class 완주하지못한선수 {
     public static String solution(String[] participant, String[] completion) {
@@ -11,13 +12,13 @@ public class 완주하지못한선수 {
         }
 
         for (int i = 0; i < completion.length; i++) {
-            map.put(completion[i], map.getOrDefault(completion[i], 1) - 1);
+            map.put(completion[i], map.get(completion[i]) - 1);
         }
 
         String result = "";
-        for (Map.Entry<String, Integer> entrySet : map.entrySet()) {
-            if (entrySet.getValue() > 0) {
-                result = entrySet.getKey();
+        for (Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > 0) {
+                result = entry.getKey();
             }
         }
 
@@ -25,6 +26,7 @@ public class 완주하지못한선수 {
     }
 
     public static void main(String[] args) {
-        System.out.println(solution(new String[]{"leo", "kiki", "eden"}, new String[]{"eden", "kiki"}));
+        System.out.println(solution(new String[]{"leo", "kiki", "eden"}, new String[] {"eden", "kiki"}));
+        System.out.println(solution(new String[]{"marina", "josipa", "nikola", "vinko", "filipa"}, new String[] {"josipa", "filipa", "marina", "nikola"}));
     }
 }
