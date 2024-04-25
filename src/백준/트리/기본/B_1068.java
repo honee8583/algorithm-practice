@@ -4,70 +4,58 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class B_1068 {
-    static int N, R, removeNode;
-    static int leaf;
-    static boolean[] visited;
     static ArrayList<Integer>[] tree;
-
+    static boolean[] visited;
+    static int delNode, leafCnt, root;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+        int N = sc.nextInt();
 
+        // 자식리스트(단방향 인접리스트)
         tree = new ArrayList[N];
         for (int i = 0; i < N; i++) {
             tree[i] = new ArrayList<>();
         }
 
+        // 입력
         for (int i = 0; i < N; i++) {
-            int n = sc.nextInt();   // 부모노드
+            int parent = sc.nextInt();
 
-            if (n != -1) {
-                tree[n].add(i);
+            if (parent != -1) {
+                tree[parent].add(i);
             } else {
-                R = i;
+                root = i;
             }
         }
 
-        removeNode = sc.nextInt();   // 제거할 노드
-        leaf = 0;
+        delNode = sc.nextInt(); // 삭제할 노드 번호
+        leafCnt = 0;
         visited = new boolean[N];
+        DFS(root);
 
-        if (removeNode == R) {
-            System.out.println(0);
+        // 출력
+        if (delNode == root) {
+            System.out.println("0");
         } else {
-            dfs(R);
-//            DFS(R);
-            System.out.println(leaf);
+            System.out.println(leafCnt);
         }
     }
 
-    public static void dfs(int node) {
-        visited[node] = true;
-        int cNode = 0;  // 현재노드의 자식노드의 개수
-
-        for (int next : tree[node]) {
-            if (!visited[next] && next != removeNode) {
-                cNode++;
-                dfs(next);
-            }
-        }
-
-        if (cNode == 0) {
-            leaf++;
-        }
-    }
-
+    // 삭제할 노드부터는 세지 않는다.
     public static void DFS(int node) {
         visited[node] = true;
 
-        if (tree[node].isEmpty()) {
-            leaf++;
-        }
-
+        int leafNodes = 0;
         for (int next : tree[node]) {
-            if (!visited[next] && next != removeNode) {
+            if (!visited[next] && next != delNode) {
+                leafNodes++;
                 DFS(next);
             }
+        }
+
+        // 탐색한 자식노드의 개수가 0이 아니면 리프노드가 아니다
+        if (leafNodes == 0) {
+            leafCnt++;
         }
     }
 }
