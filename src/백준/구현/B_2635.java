@@ -1,4 +1,4 @@
-package 백준;
+package 백준.구현;
 
 import java.util.ArrayList;
 import java.util.List;
