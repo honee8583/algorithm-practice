@@ -20,9 +20,10 @@ public class B_2491 {
             return;
         }
 
-        // 증가
         int max1 = 2;
+        int max2 = 2;
         int inc = 1;
+        int dec = 1;
         for (int i = 1; i < N; i++) {
             if (arr[i] >= arr[i - 1]) {
                 inc++;
@@ -30,27 +31,20 @@ public class B_2491 {
                 max1 = Math.max(max1, inc);
                 inc = 1;
             }
-            // 끝까지 도달한경우
-            if (i == N - 1) {
-                max1 = Math.max(max1, inc);
-            }
-        }
 
-        // 감소
-        int max2 = 2;
-        int dec = 1;
-        for (int i = 1; i < N; i++) {
             if (arr[i] <= arr[i - 1]) {
                 dec++;
             } else {
                 max2 = Math.max(max2, dec);
                 dec = 1;
             }
-            // 끝까지 도달한 경우
+            // 끝까지 도달한경우
             if (i == N - 1) {
+                max1 = Math.max(max1, inc);
                 max2 = Math.max(max2, dec);
             }
         }
+
         System.out.println(Math.max(max1, max2));
     }
 }
