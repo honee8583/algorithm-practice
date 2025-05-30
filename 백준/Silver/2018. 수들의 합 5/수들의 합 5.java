@@ -6,31 +6,20 @@ class Main {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
 
-        if (N == 1) {
-            System.out.println(1);
-            return;
-        }
-
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = i + 1;
-        }
-
-        int cnt = 0;
-        int start = 0;
+        int cnt = 1;
+        int start = 1;
         int end = 1;
-        while (start <= end) {
-            int tmp = 0;
-            for (int i = start; i <= end; i++) {
-                tmp += arr[i];
-            }
-
-            if (tmp == N) {
+        int sum = 1;
+        while (end != N) {
+            if (sum == N) {
                 cnt++;
-                start++;
-            } else if (tmp < N) {
                 end++;
-            } else if (tmp > N) {
+                sum += end;
+            } else if (sum < N) {
+                end++;
+                sum += end;
+            } else if (sum > N) {
+                sum -= start;
                 start++;
             }
         }
