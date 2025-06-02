@@ -11,30 +11,14 @@ class Main {
         int m = Integer.parseInt(st.nextToken());
 
         st = new StringTokenizer(br.readLine());
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        long[] arr = new long[n + 1];
+        for (int i = 1; i <= n; i++) {
+            arr[i] = arr[i - 1] + Integer.parseInt(st.nextToken());
         }
 
-        long sum = 0;
-        for (int i = 0; i < m; i++) {
-            sum += arr[i];
-        }
-
-        long max = sum;
-        int i = 0;
-        int j = i + m - 1;
-        while (j < n) {
-            max = Math.max(max, sum);
-
-            if (j + 1 < n) {
-                sum -= arr[i];
-                i++;
-                j++;
-                sum += arr[j];
-            } else {
-                break;
-            }
+        long max = Integer.MIN_VALUE;
+        for (int i = m; i <= n; i ++) {
+            max = Math.max(max, arr[i] - arr[i - m]);
         }
 
         bw.write(max + "\n");
