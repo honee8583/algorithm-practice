@@ -6,31 +6,19 @@ class Main {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
 
-        int A = N / 5;  // 5원 최대 개수
+        int cnt = -1;
+        for (int five = N / 5; five >= 0; five--) {  // 5원 개수
+            int tmp = N;
+            tmp -= (five * 5);
 
-        int cnt = 0;
-        int tmp = N;
-        boolean flag = false;
-        for (int i = A; i >= 0; i--) {
-            tmp -= (i * 5);
-            int two = tmp / 2;
-            tmp %= 2;
-
-            if (tmp == 0) {
-                flag = true;
-                cnt = i + two;
+            int two = tmp / 2;  // 2원 개수
+            if (tmp % 2 == 0) {
+                cnt = five + two;
                 break;
             }
-
-            cnt = 0;
-            tmp = N;
         }
 
-        if (flag) {
-            System.out.println(cnt);
-        } else {
-            System.out.println(-1);
-        }
+        System.out.println(cnt);
 
         sc.close();
     }
