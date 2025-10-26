@@ -1,83 +1,67 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-public class Main {
-    static int N, M;
-    static int[] route, parent;
-    static int[][] matrix;
-
+class Main {
+    static int[] parent;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        N = Integer.parseInt(br.readLine());
-        M = Integer.parseInt(br.readLine());
-
-        route = new int[M + 1];
-        matrix = new int[N + 1][N + 1];
-        for (int i = 1; i <= N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 1; j <= N; j++) {
-                int connection = Integer.parseInt(st.nextToken());
-                matrix[i][j] = connection;
-            }
-        }
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= M; i++) {
-            route[i] = Integer.parseInt(st.nextToken());
-        }
-
-//        System.out.println(Arrays.deepToString(matrix));
-//        System.out.println(Arrays.toString(route));
+        int N = getNum(br.readLine());
+        int M = getNum(br.readLine());
 
         parent = new int[N + 1];
         for (int i = 1; i <= N; i++) {
             parent[i] = i;
         }
 
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                if (matrix[i][j] == 1) {
+        StringTokenizer st;
+        for (int i = 1;i <= N;i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 1;j <= N; j++) {
+                boolean isConnected = getNum(st.nextToken()) == 1;
+                if (isConnected) {
                     union(i, j);
                 }
             }
         }
 
-//        System.out.println(Arrays.toString(parent));
+        int[] route = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0;i < M;i++) {
+            route[i] = getNum(st.nextToken());
+        }
 
-        int start = find(route[1]);
-        for (int i = 2; i < route.length; i++) {
-            if (start != find(route[i])) {
-                System.out.println("NO");
-                return;
+        int node = find(route[0]);
+        boolean flag = true;
+        for (int i = 1;i < M;i++) {
+            if (find(route[i]) != node) {
+                flag = false;
             }
         }
-        System.out.println("YES");
+
+        if (flag) {
+            System.out.println("YES");
+        } else {
+            System.out.println("NO");
+        }
+
     }
 
-    public static void union(int startPoint, int endPoint) {
-        startPoint = find(startPoint);
-        endPoint = find(endPoint);
-
-//        if (startParent >= endParent) {
-//            parent[endParent] = startParent;
-//        } else {
-//            parent[startParent] = endParent;
-//        }
-
-        if (startPoint != endPoint) {
-            parent[endPoint] = startPoint;
+    public static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a != b) {
+            parent[a] = b;
         }
     }
 
-    public static int find(int point) {
-        if (parent[point] == point) {
-            return point;
+    public static int find(int node) {
+        if (parent[node] == node) {
+            return node;
         }
+        return parent[node] = find(parent[node]);
+    }
 
-        return parent[point] = find(parent[point]);
+    public static Integer getNum(String token) {
+        return Integer.parseInt(token);
     }
 }
