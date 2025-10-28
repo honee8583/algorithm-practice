@@ -29,9 +29,6 @@ class Main {
             }
         }
 
-        // System.out.println(Arrays.toString(indegree));
-        // System.out.println(Arrays.toString(times));
-
         int[] result = new int[N + 1];
         for (int i = 1;i <= N;i++) {
             result[i] = 0;
@@ -43,8 +40,6 @@ class Main {
                 q.offer(i);
             }
         }
-
-        // System.out.println(Arrays.toString(result));
 
         while (!q.isEmpty()) {
             int cur = q.poll();
@@ -58,8 +53,6 @@ class Main {
                     q.offer(next);
                 }
             }
-
-            // System.out.println(Arrays.toString(result));
         }
 
         for (int i = 1;i <= N;i++) {
