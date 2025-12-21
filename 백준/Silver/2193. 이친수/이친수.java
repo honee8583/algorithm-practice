@@ -6,15 +6,13 @@ class Main {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
 
-        long[] zero = new long[N + 1];
-        long[] one = new long[N + 1];
-        zero[1] = 0;
-        one[1] = 1;
-        for (int i = 2; i <= N; i++) {
-            zero[i] = one[i - 1] + zero[i - 1];
-            one[i] = zero[i - 1];
+        long[][] dp = new long[N + 1][N + 1];
+        dp[1][1] = 1;
+        for (int i = 2;i <= N;i++) {
+            dp[i][0] = dp[i - 1][0] + dp[i - 1][1];
+            dp[i][1] = dp[i - 1][0];
         }
 
-        System.out.println(zero[N] + one[N]);
+        System.out.println(dp[N][0] + dp[N][1]);
     }
 }
