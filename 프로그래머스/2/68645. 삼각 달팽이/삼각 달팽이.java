@@ -17,7 +17,6 @@ class Solution {
             
             // 맨 밑으로 이동
             while (x < n - 1) {
-                // System.out.println(x + ", " + y);
                 if (arr[x + 1][y] > 0) break;
                 arr[x + 1][y] = arr[x][y] + 1;
                 flag = false;
@@ -26,7 +25,6 @@ class Solution {
             
             // 맨 오른쪽으로 이동
             while (y < n - 1) {
-                // System.out.println(x + ", " + y);
                 if (arr[x][y + 1] > 0) break;
                 arr[x][y + 1] = arr[x][y] + 1;
                 flag = false;
@@ -35,7 +33,6 @@ class Solution {
             
             // 왼쪽 대각선으로 이동
             while (x > 0 && y > 0) {
-                // System.out.println(x + ", " + y);
                 if (arr[x - 1][y - 1] > 0) break;
                 arr[x - 1][y - 1] = arr[x][y] + 1;
                 flag = false;
